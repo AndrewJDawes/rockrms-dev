@@ -10,7 +10,9 @@ Vagrant.configure("2") do |config|
 
       # iis.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
-      iis.vm.provision :shell, inline: "Set-NetFirewallProfile -Profile Domain, Public, Private -Enabled False"
+      # Disable Windows Defender
+      iis.vm.provision :shell, path: "provisioners/defender-disable.ps1"
+
       iis.vm.provision :shell, path: "provisioners/iis-install.ps1"
       # iis.vm.provision :shell, path: "provisioners/iis-configure.ps1"
 
@@ -28,7 +30,8 @@ Vagrant.configure("2") do |config|
 
       # sqlserver.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
-      sqlserver.vm.provision :shell, inline: "Set-NetFirewallProfile -Profile Domain, Public, Private -Enabled False"
+      # Disable Windows Defender
+      sqlserver.vm.provision :shell, path: "provisioners/defender-disable.ps1"
 
       # sqlserver.vm.provision :shell, path: "provisioners/sqlserver-install.ps1"
       # sqlserver.vm.provision :shell, path: "provisioners/sqlserver-configure.ps1"
