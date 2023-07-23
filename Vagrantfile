@@ -1,6 +1,8 @@
 Vagrant.configure("2") do |config|
     # WORKED
     config.vm.box = "gusztavvargadr/windows-server"
+    config.vm.guest = :windows
+    config.vm.communicator = "winrm"
 
     # DID NOT WORK
     #   config.vm.define "windows-server-iis" do |vm1|
