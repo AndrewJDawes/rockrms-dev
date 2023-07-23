@@ -1,20 +1,38 @@
 Vagrant.configure("2") do |config|
-    # WORKED
-    config.vm.box = "gusztavvargadr/windows-server"
-    config.vm.guest = :windows
-    config.vm.communicator = "winrm"
 
-    # DID NOT WORK
-    #   config.vm.define "windows-server-iis" do |vm1|
-    #     vm1.vm.box = "gusztavvargadr/iis-windows-server"
-    #     # vm1.vm.network "private_network", ip: "192.168.100.10"
-    #     # Additional configuration for vm1
-    #   end
+    config.vm.define "iis" do |iis|
 
-  # Define the second virtual machine (vm2) with similar configuration
-#   config.vm.define "windows-server-sql" do |vm2|
-#     vm2.vm.box = "gusztavvargadr/sql-server"
-#     # vm2.vm.network "private_network", ip: "192.168.100.11"
-#     # Additional configuration for vm2
-#   end
+      iis.vm.box = "gusztavvargadr/iis"
+      iis.vm.guest = :windows
+      iis.vm.communicator = "winrm"
+
+      iis.vm.network "private_network", ip: "192.168.50.10"
+
+      # iis.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+
+      iis.vm.provision :shell, path: "provisioners/iis-install.ps1"
+      # iis.vm.provision :shell, path: "provisioners/iis-configure.ps1"
+
+      iis.vm.boot_timeout = 600
+
+    end
+
+    config.vm.define "sqlserver" do |sqlserver|
+
+      sqlserver.vm.box = "gusztavvargadr/sql-server"
+      sqlserver.vm.guest = :windows
+      sqlserver.vm.communicator = "winrm"
+
+      sqlserver.vm.network "private_network", ip: "192.168.50.20"
+
+      # sqlserver.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+
+      # sqlserver.vm.provision :shell, path: "provisioners/sqlserver-install.ps1"
+      # sqlserver.vm.provision :shell, path: "provisioners/sqlserver-configure.ps1"
+
+      sqlserver.vm.boot_timeout = 600
+
+    end
+
+
 end
